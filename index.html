@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#2a6f97">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Symptom-Tagebuch</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar"><h1>Symptom-Tagebuch</h1></header>
+
+  <main>
+    <!-- EINTRAGEN -->
+    <section id="page-entry" class="page active">
+      <form id="entryForm" class="card" novalidate>
+        <div class="field">
+          <label for="f-date">Datum</label>
+          <input type="date" id="f-date" required>
+          <p id="f-date-hint" class="hint warn" hidden>Für diesen Tag gibt es schon einen Eintrag. Er wurde geladen, Speichern überschreibt ihn.</p>
+        </div>
+
+        <div class="field">
+          <label for="f-schlafStunden">Schlafdauer (Stunden)</label>
+          <input type="number" id="f-schlafStunden" inputmode="decimal" min="0" max="24" step="0.25" placeholder="z. B. 7,5">
+        </div>
+
+        <div id="scales"></div>
+
+        <div class="field">
+          <label class="toggle"><input type="checkbox" id="f-verstopfung"> Verstopfung heute</label>
+        </div>
+
+        <div class="field">
+          <label for="f-notizen">Notizen</label>
+          <textarea id="f-notizen" rows="3" placeholder="Besonderheiten, Medikamente, Essen …"></textarea>
+        </div>
+
+        <button type="submit" class="primary block">Eintrag speichern</button>
+        <button type="button" class="danger block" id="btnDelete" hidden style="margin-top:8px">Diesen Eintrag löschen</button>
+      </form>
+    </section>
+
+    <!-- VERLAUF -->
+    <section id="page-charts" class="page">
+      <div class="range" id="range">
+        <button type="button" data-days="14" class="active">14 Tage</button>
+        <button type="button" data-days="30">30 Tage</button>
+        <button type="button" data-days="90">90 Tage</button>
+        <button type="button" data-days="0">Alle</button>
+      </div>
+      <div id="chartsContent"></div>
+      <button type="button" class="primary block" id="btnReport">Arztbericht drucken / als PDF speichern</button>
+      <p class="hint">Im Druckdialog „Als PDF speichern“ wählen, um den Bericht zu verschicken.</p>
+    </section>
+
+    <!-- DATEN -->
+    <section id="page-data" class="page">
+      <div class="card">
+        <h2>Einträge</h2>
+        <div id="entryList"></div>
+      </div>
+
+      <div class="card">
+        <h2>Export &amp; Sicherung</h2>
+        <p class="hint" style="margin:0 0 12px">Deine Daten liegen nur auf diesem Gerät, in diesem Browser. Mach ab und zu eine Sicherung, damit nichts verloren geht, wenn Browserdaten gelöscht werden.</p>
+        <div class="row" style="margin-bottom:8px">
+          <button type="button" id="btnCsv">Tabelle (CSV)</button>
+          <button type="button" id="btnBackup">Sicherung (JSON)</button>
+        </div>
+        <div class="row">
+          <button type="button" id="btnImport">Sicherung importieren</button>
+          <input type="file" id="importFile" accept="application/json,.json" hidden>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Alle Daten löschen</h2>
+        <button type="button" class="danger block" id="btnClear">Alle Einträge löschen</button>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar" id="tabbar">
+    <button type="button" data-page="entry" class="active">Eintragen</button>
+    <button type="button" data-page="charts">Verlauf</button>
+    <button type="button" data-page="data">Daten</button>
+  </nav>
+
+  <div id="report"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
